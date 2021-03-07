@@ -66,16 +66,16 @@ def onclick(event):
         # Dart landed inside scoring area
         if (rad < rw):
             # Double Bull
-            print("hit double bull!")
+            #print("hit double bull!")
             plt.plot(x, y, 'xk')
             score[20, 1] += 1
         elif (rad < rb):
             # Single bull
-            print("hit single bull!")
+            #print("hit single bull!")
             score[20, 0] += 1
             plt.plot(x, y, 'xk')
         else:
-            # check if the right segment was hit
+            # check if the correct segment was hit
             arctan = (90 - np.arctan2(y, x) * 360 /
                       (2 * np.pi)) % 360  # calculates the angle of the dart
             offset = (labels[2] - labels[1]) * 360 / (2 * np.pi)
@@ -89,7 +89,11 @@ def onclick(event):
                     score[sec - 1, 2] += 1
                 else:
                     score[sec - 1, 0] += 1
+            else:
+                #Wrong Segment hit
+                plt.plot(x, y, 'xr')
     else:
+        #Dart landed outside the scoring area
         plt.plot(x, y, 'xr')
     fig.canvas.draw()
     if (counter % 3 == 0):
