@@ -1,3 +1,4 @@
+import csv
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date
@@ -15,14 +16,15 @@ offset = (labels[2] - labels[1]) / 2
 counter = 0
 ring = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11,
         14, 9, 12, 5]  # Number Ring
+MAX_DARTS = 60
 score = np.zeros([21, 3])
-
+hits = np.zeros([MAX_DARTS, 2])
 
 def increase_counter():
     # increases darts counter and finishes game after 60 darts
     global counter
     counter += 1
-    if counter > 60:
+    if counter > MAX_DARTS:
         print_statistics()
 
 
@@ -60,6 +62,8 @@ def onclick(event):
     y = event.ydata
     global counter
     increase_counter()
+    hits[counter-1, 0] = x
+    hits[counter-1, 1] = y
     sec = (int)(np.ceil(counter / 3))
     rad = np.sqrt(x**2 + y**2)
     if (rad < ro):
@@ -125,10 +129,17 @@ def print_statistics():
     # TODO: Add statistics to file
     # Prints statistics and saves chart
     filename = str(date.today())
-    plt.savefig(filename)
+    #plt.savefig(filename)
     print("Reached End, saved plot in ", filename)
     print("Overview :")
     print_array(score)
+    with open("data.csv", "a") as myfile:
+        csvfile = csv.writer(myfile, delimiter=',')
+        csvfile.writerows(hits)
+        myfile.close()
+    #f = open('data.csv', 'a')
+    #np.savetxt('data.csv', hits)
+    #f.close()
     plt.close()
 
 
