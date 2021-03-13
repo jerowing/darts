@@ -48,7 +48,7 @@ def draw_dartboard():
             [rb * np.cos(labels[i] + offset), (rt-rb) * np.cos(labels[i] + offset)],
             'k-', linewidth='0.5')
 
-data = np.genfromtxt('data.csv', delimiter=',', skip_header=1)
+data = np.genfromtxt('example_data.csv', delimiter=',', skip_header=1)
 #print(data[:,0])
 x = data[:,0]
 y = data[:,1]

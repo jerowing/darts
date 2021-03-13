@@ -85,7 +85,7 @@ def onclick(event):
             offset = (labels[2] - labels[1]) * 360 / (2 * np.pi)
             expected = (ring.index(sec)) * 18  # Allowed angles
             if arctan > expected - offset / 2 and arctan < expected + offset / 2:
-                # print("hit!")
+                print("hit!")
                 hits[counter-1,2] = 1
                 plt.plot(x, y, 'xg')
                 if is_double(rad):
@@ -105,8 +105,8 @@ def onclick(event):
     hits[counter-1, 3] = np.datetime64('today')
     increase_counter()
     fig.canvas.draw()
-    if (counter % 3 == 0):
-        print("SECTOR ", (int)(np.ceil((counter) / 3)) + 1)
+    if (counter % 3 == 1):
+        print("SECTOR ", (int)(np.ceil((counter) / 3)) )
 
 
 """ Can Maybe be used lated on
