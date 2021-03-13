@@ -13,12 +13,12 @@ rw = 15  # Radius of Special fields
 rb = 2 * rw  # bullseye radius
 labels = np.linspace(0, 2 * np.pi, 20, endpoint=False)  # Label Ring
 offset = (labels[2] - labels[1]) / 2
-counter = 0
+counter = 1
 ring = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11,
         14, 9, 12, 5]  # Number Ring
 MAX_DARTS = 60
 score = np.zeros([21, 3])
-hits = np.zeros([MAX_DARTS, 2])
+hits = np.zeros([MAX_DARTS, 4])
 
 def increase_counter():
     # increases darts counter and finishes game after 60 darts
@@ -61,7 +61,7 @@ def onclick(event):
     x = event.xdata
     y = event.ydata
     global counter
-    increase_counter()
+
     hits[counter-1, 0] = x
     hits[counter-1, 1] = y
     sec = (int)(np.ceil(counter / 3))
@@ -86,6 +86,7 @@ def onclick(event):
             expected = (ring.index(sec)) * 18  # Allowed angles
             if arctan > expected - offset / 2 and arctan < expected + offset / 2:
                 # print("hit!")
+                hits[counter-1,2] = 1
                 plt.plot(x, y, 'xg')
                 if is_double(rad):
                     score[sec - 1, 1] += 1
@@ -95,10 +96,14 @@ def onclick(event):
                     score[sec - 1, 0] += 1
             else:
                 #Wrong Segment hit
+                hits[counter-1, 2] = 0
                 plt.plot(x, y, 'xr')
     else:
         #Dart landed outside the scoring area
         plt.plot(x, y, 'xr')
+
+    hits[counter-1, 3] = np.datetime64('today')
+    increase_counter()
     fig.canvas.draw()
     if (counter % 3 == 0):
         print("SECTOR ", (int)(np.ceil((counter) / 3)) + 1)
@@ -137,9 +142,7 @@ def print_statistics():
         csvfile = csv.writer(myfile, delimiter=',')
         csvfile.writerows(hits)
         myfile.close()
-    #f = open('data.csv', 'a')
-    #np.savetxt('data.csv', hits)
-    #f.close()
+        print("wrote to file")
     plt.close()
 
 
